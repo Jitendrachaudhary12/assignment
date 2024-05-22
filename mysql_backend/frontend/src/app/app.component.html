@@ -1,0 +1,127 @@
+<div class="row"  color="primary">
+  <div><span *ngIf="step === 1"  mat-raised-button color="primary">1</span><span *ngIf="step === 2" mat-raised-button  color="primary">completed</span>Details</div>
+  <div><span *ngIf="(step === 2) && !this.form.valid "  color="primary">2</span><span *ngIf="this.form.valid"  color="primary">completed</span>Inventories</div>
+</div>
+
+<div *ngIf="step === 1">
+  <div [formGroup]="form">
+    <mat-form-field appearance="fill" class="example-width">
+      <mat-label>Company</mat-label>
+      <input
+      matInput
+      placeholder="Company"
+      [matAutocomplete]="auto"
+      [formControl]="myControl"
+    />
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let item of filteredOptions|async" [value]="item">{{item}}</mat-option>
+    </mat-autocomplete>
+    </mat-form-field>
+      <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+      <mat-form-field appearance="fill">
+      <mat-label>Store</mat-label>
+        <input
+        matInput
+        placeholder="Store"
+        [matAutocomplete]="auto_store"
+        [formControl]="myControl_store"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto_store="matAutocomplete">
+        <mat-option *ngFor="let item of filteredOptions_store|async" [value]="item">{{item}}</mat-option>
+      </mat-autocomplete>
+      </mat-form-field>
+     <mat-form-field appearance="fill">
+      <mat-label>Remarks</mat-label>
+      <textarea matInput formControlName="remarks"></textarea>
+    </mat-form-field>
+  </div>
+
+
+  <button mat-raised-button color="primary" (click)="nextStep()">Next</button>
+</div>
+<div *ngIf="step === 2">
+
+  <div class="details-summary">
+    <p><strong>Company:</strong> {{ form.get('company')?.value }}</p>
+    <p><strong>Date:</strong> {{ form.get('date')?.value | date }}</p>
+    <p><strong>Store:</strong> {{ form.get('store')?.value }}</p>
+    <p><strong>Remarks:</strong> {{ form.get('remarks')?.value }}</p>
+  </div>
+  <div [formGroup]="form">
+    <div formArrayName="inventories">
+      <div *ngFor="let inventory of inventories?.controls; let i = index" [formGroupName]="i"  class="inventory-item">
+        <!-- <h1>{{form|json}}</h1> -->
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Item Category</mat-label>
+          <input matInput formControlName="itemCategory">
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill">
+          <mat-label>Item Category</mat-label>
+            <input
+            matInput
+            placeholder="Store"
+            [matAutocomplete]="auto_item_cat"
+            [formControl]="myControl_item_cat"
+            id="item_Category"
+            (ngModelChange)="onItemCategoryChange(i)"
+          />
+          <mat-autocomplete autoActiveFirstOption #auto_item_cat="matAutocomplete">
+            <mat-option *ngFor="let item of filteredOptions_item_cat|async" [value]="item">{{item}}</mat-option>
+          </mat-autocomplete>
+          </mat-form-field>
+
+
+
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Item</mat-label>
+          <input matInput formControlName="item">
+        </mat-form-field> -->
+        <mat-form-field appearance="fill">
+          <mat-label>Item</mat-label>
+            <input
+            matInput
+            placeholder="Store"
+            [matAutocomplete]="auto_item"
+            [formControl]="myControl_item"
+            (ngModelChange)="onItemChange(i)"
+            id="item"
+          />
+          <mat-autocomplete autoActiveFirstOption #auto_item="matAutocomplete">
+            <mat-option *ngFor="let item of filteredOptions_item|async" [value]="item">{{item}}</mat-option>
+          </mat-autocomplete>
+          </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Quantity</mat-label>
+          <input matInput formControlName="quantity"  (change)="onChange(i)">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Total Cost</mat-label>
+          <input matInput formControlName="totalCost"  (change)="onChange(i)">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="pointer-events: none;">
+          <mat-label>Cost Per Unit</mat-label>
+          <input matInput formControlName="costPerUnit" >
+        </mat-form-field>
+        <button *ngIf="this.inventories.value.length>1"  mat-icon-button color="warn" (click)="removeInventoryItem(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="addInventoryItem()">Add New</button>
+  </div>
+
+
+
+
+  <button mat-raised-button (click)="previousStep()">Back</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+  <button mat-raised-button color="warn" (click)="clearAllInventories()">Clear All</button>
+</div>

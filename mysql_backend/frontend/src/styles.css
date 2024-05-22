@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* @import '~@angular/material/theming'; */
+@include mat-core();
+/* @import './purple-green.css'; */
+
+/* $custom-theme-primary: mat-palette($mat-indigo);
+$custom-theme-accent: mat-palette($mat-pink, A200, A100, A400);
+$custom-theme-warn: mat-palette($mat-red); */
+
+/* $custom-theme: mat-light-theme((
+  color: (
+    primary: $custom-theme-primary,
+    accent: $custom-theme-accent,
+    warn: $custom-theme-warn,
+  ),
+  typography: mat-typography-config(),
+  // additional settings if needed
+)); */
+
+@include angular-material-theme($custom-theme);
