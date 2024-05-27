@@ -34,7 +34,7 @@ if (invalidInventories.length > 0) {
   invalidInventories.forEach(({ index, missingKeys }) => {
     console.log(`Inventory at index ${index} is missing keys: ${missingKeys.join(', ')}`);
   });
-  res.status(404).send({
+  res.status(500).send({
     success:false,
     message:"Please fill all inventory data carefully"
   })

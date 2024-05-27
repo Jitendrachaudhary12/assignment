@@ -13,6 +13,7 @@ declare var $:any
 export class AppComponent implements OnInit {
   form: FormGroup;
   step: number = 1;
+  isLinear=true;
    myControl = new FormControl('');
    myControl_store = new FormControl('');
    myControl_item = new FormControl('');
@@ -57,6 +58,16 @@ export class AppComponent implements OnInit {
 
   }
 
+  createInventoryItem(): FormGroup {
+    return this.fb.group({
+      itemCategory: ['', ],
+      item: ['', ],
+      quantity: ['', [Validators.minLength(1),Validators.maxLength(17),Validators.pattern("^[0-9+-]*$")]],
+      totalCost: ['', [Validators.minLength(1),Validators.maxLength(17),Validators.pattern("^[0-9+-]*$")]],
+      costPerUnit: [''],
+    });
+  }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     // console.log(filterValue)
@@ -89,7 +100,6 @@ item_cat:any=''
   onItemChange(index:number){
     this.inventories?.at(index).get('item')?.setValue(this.item)
     this.item=''
-
   }
   onItemCategoryChange(index:number){
     this.inventories?.at(index).get('itemCategory')?.setValue(this.item_cat)
@@ -97,15 +107,7 @@ item_cat:any=''
   }
 
 
-  createInventoryItem(): FormGroup {
-    return this.fb.group({
-      itemCategory: ['', Validators.required],
-      item: ['', Validators.required],
-      quantity: ['', [Validators.required,Validators.minLength(1),Validators.maxLength(17),Validators.pattern("^[0-9+-]*$")]],
-      totalCost: ['', [Validators.required,Validators.minLength(1),Validators.maxLength(17),Validators.pattern("^[0-9+-]*$")]],
-      costPerUnit: [''],
-    });
-  }
+
 
   // get f() {
   //   console.log(this.form.controls)
@@ -123,7 +125,7 @@ item_cat:any=''
     console.log("Adding a time table");
     this.inventories.push(this.createInventoryItem());
   }
-  
+
 
   onChange(index:number){
 
@@ -163,7 +165,7 @@ item_cat:any=''
     let item=  document.getElementById('item')
     // item_Category.value=''
     // item.value=''
-     
+
     // }
     // this.addInventoryItem(); // Add one empty inventory item
   }
@@ -173,6 +175,39 @@ item_cat:any=''
     if (this.step === 1 && this.form.controls['company'].valid && this.form.controls['date'].valid && this.form.controls['store'].valid) {
       this.step++;
     }
+    // console.log(this.inventories)
+    // this.inventories.push(this.createInventoryItem());
+    // const nameControl =this.inventories.get('itemCategory');
+    // const item =this.inventories.get('item');
+    // const quantity =this.inventories.get('quantity');
+    // const totalCost =this.inventories.get('totalCost');
+    // if (nameControl?.hasValidator(Validators.required)) {
+    //   nameControl.clearValidators();
+    // } else {
+    //   nameControl?.setValidators([Validators.required]);
+    // }
+    // nameControl?.updateValueAndValidity();
+
+    // if (item?.hasValidator(Validators.required)) {
+    //   item.clearValidators();
+    // } else {
+    //   item?.setValidators([Validators.required]);
+    // }
+    // item?.updateValueAndValidity();
+
+    // if (quantity?.hasValidator(Validators.required)) {
+    //   quantity.clearValidators();
+    // } else {
+    //   quantity?.setValidators([Validators.required]);
+    // }
+    // quantity?.updateValueAndValidity();
+
+    // if (totalCost?.hasValidator(Validators.required)) {
+    //   totalCost.clearValidators();
+    // } else {
+    //   totalCost?.setValidators([Validators.required]);
+    // }
+    // totalCost?.updateValueAndValidity();
   }
 
   previousStep() {
@@ -195,6 +230,7 @@ item_cat:any=''
         },
         error => {
          console.log(error,'Error in post data')
+         alert("Please fill all inventory data carefully")
         }
       )
     }

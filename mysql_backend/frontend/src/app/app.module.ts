@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatStepperModule } from '@angular/material/stepper';
 import {
   HttpClientModule,
   HTTP_INTERCEPTORS,
@@ -43,6 +44,7 @@ import {
     MatCheckboxModule,
     NgxMatSelectSearchModule,
     HttpClientModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]
